@@ -1,10 +1,12 @@
 <?php
 namespace Securite;
 
-require_once 'autoloader.php';
+require_once 'Service.php';
+
 class SelectRecordService extends Service
 {
     const METHOD = 'GET';
+    const NEEDED_ARGS = ["table", "filter"];
 
     function Trig()
     {

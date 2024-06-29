@@ -2,8 +2,7 @@
 namespace Securite;
 require_once '../autoloader.php';
 
-// TODO: remettre id comme filtre obligatoire plutot que de laisser libre choix pour certaines actions
-
+// TODO: handle execptions with response codes for all the other methods et enlever tous les echos zzz
 class DataBase
 {
     private $connection;
@@ -12,7 +11,7 @@ class DataBase
     {
         $this->pdo = (new Connection())->getConnection();
     }
-    
+
 
     // insere un nouveau registre dans la table
     public function addRecord($table, $record)
@@ -37,29 +36,17 @@ class DataBase
     }
 
     // selectionne un registre dans la table
-
     public function selectRecord($table, $filter)
     {
         try {
             // va verifier si `select_colum` existe dans le filtre
-            if (!isset($filter['select_column'])) {
-                throw new \Exception("Please select column(s)");
+            if (!isset($filter['select_column']) || !is_array($filter['select_column'])) {
+                throw new \Exception("Please select column(s) as an array");
             }
 
             // recupere les colonnes selectionnees
             $columns = $filter['select_column'];
-
-            // construit la clause SELECT selon les colonnes selectionnees
-            switch ($columns) {
-                case '*':
-                    $selected_columns = '*'; // selection de toutes les colonnes
-                    break;
-                case is_array($columns):
-                    $selected_columns = implode(', ', $columns); // selection specifique de colonnes
-                    break;
-                default:
-                    throw new \Exception("Columns must be input in an array");
-            }
+            $selected_columns = implode(', ', $columns);
 
             unset($filter['select_column']);
 
@@ -79,21 +66,16 @@ class DataBase
 
             $stmt->execute();
 
-            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-                // si '*' est selectionne, on itere sur toutes les colonnes
-                // sinon on affiche la ou les colonnes selectionnees
-                $displayed_columns = ($selected_columns === '*') ? array_keys($row) : explode(', ', $selected_columns);
-
-                foreach ($displayed_columns as $column) {
-                    echo "{$column}: {$row[$column]}<br/>";
-                }
-            }
+            // retourne le statement sous forme d'array associatif
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         } catch (\Exception $e) {
-            echo "Error: " . $e->getMessage();
+            http_response_code(500);
+            return ['error' => $e->getMessage()];
         }
     }
 
+    // met a jour un registre dans la table
     public function updateRecord($table, $record, $filter)
     {
         try {
@@ -130,6 +112,7 @@ class DataBase
         }
     }
 
+    // supprime un registre dans la table
     public function deleteRecord($table, $filter)
     {
         try {

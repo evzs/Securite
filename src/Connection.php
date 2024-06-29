@@ -8,7 +8,7 @@ class Connection {
     public $db_name;
 
     public function __construct(Credentials $credentials = null) {
-        if (!isset($credentials)) $credentials = Credentials::fromFile('credentials.json');
+        if (!isset($credentials)) $credentials = Credentials::fromFile('db_credentials.json');
 
         $this->db_name = $credentials->db_name;
         $this->pdo = self::PDO($credentials);
