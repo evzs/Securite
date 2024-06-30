@@ -2,7 +2,12 @@
 namespace Securite;
 require_once '../autoloader.php';
 
-// TODO: handle execptions with response codes for all the other methods et enlever tous les echos zzz
+/* TODO: handle execptions with response codes for all the other methods et enlever tous les echos zzz
+TODO: supprimer try catch
+TODO: ajouter OR condition a select update et delete record
+TODO: creer methodes pour clauses set et where ?
+TODO: whitelist operateurs SQL ?
+*/
 class DataBase
 {
     private $connection;
@@ -36,19 +41,16 @@ class DataBase
     }
 
     // selectionne un registre dans la table
-    public function selectRecord($table, $filter)
+    public function selectRecord($table, $columns, $filter)
     {
         try {
-            // va verifier si `select_colum` existe dans le filtre
-            if (!isset($filter['select_column']) || !is_array($filter['select_column'])) {
-                throw new \Exception("Please select column(s) as an array");
+            // va verifier si `columns` est un tableau
+            if (!is_array($columns)) {
+                throw new \Exception("Column(s) must be given as an array");
             }
 
             // recupere les colonnes selectionnees
-            $columns = $filter['select_column'];
             $selected_columns = implode(', ', $columns);
-
-            unset($filter['select_column']);
 
 
             $query = "SELECT {$selected_columns} FROM {$table} WHERE ";

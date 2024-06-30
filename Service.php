@@ -3,7 +3,7 @@ namespace Securite;
 
 abstract class Service
 {
-    const ALLOWED_ARGS = ["table", "record", "filter"];
+    const ALLOWED_ARGS = ["table", "record", "filter", "columns"];
 
     function __construct()
     {
@@ -38,8 +38,8 @@ abstract class Service
             return;
         }
 
-        $this->Trig();
+        $this->execute();
     }
 
-    abstract function Trig();
+    abstract function execute();
 }

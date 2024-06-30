@@ -9,7 +9,7 @@ class AddRecordService extends Service
     const METHOD = 'POST';
     const NEEDED_ARGS = ["table", "record"];
 
-    function Trig()
+    function execute()
     {
         $db = new DataBase();
 

@@ -6,9 +6,9 @@ require_once 'autoloader.php';
 class UpdateRecordService extends Service
 {
     const METHOD = 'PUT';
-    const NEEDED_ARGS = ["table", "filter", "record"];
+    const NEEDED_ARGS = ["table", "record", "filter"];
 
-    function Trig()
+    function execute()
     {
         $db = new DataBase();
 
