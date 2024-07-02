@@ -9,8 +9,9 @@ function autoloader($class_name) {
 
         $directories = [
             __DIR__,
-            __DIR__ . '/src',
-            __DIR__ . '/services'
+            __DIR__ . '/services',
+            __DIR__ . '/database',
+            __DIR__ . '/seclib',
         ];
 
         foreach ($directories as $directory) {

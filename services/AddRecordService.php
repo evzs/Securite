@@ -1,7 +1,7 @@
 <?php
 namespace Securite\services;
 
-use Securite\DataBase;
+use Securite\database\DataBase;
 
 require_once '../autoloader.php';
 

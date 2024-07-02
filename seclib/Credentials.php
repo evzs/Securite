@@ -1,5 +1,6 @@
 <?php
-namespace Securite;
+namespace Securite\seclib;
+
 require_once '../autoloader.php';
 
 class Credentials {
