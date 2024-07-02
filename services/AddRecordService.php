@@ -1,8 +1,9 @@
 <?php
-namespace Securite;
+namespace Securite\services;
 
-require_once 'autoloader.php';
+use Securite\DataBase;
 
+require_once '../autoloader.php';
 
 class AddRecordService extends Service
 {

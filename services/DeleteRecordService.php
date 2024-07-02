@@ -1,5 +1,5 @@
 <?php
-namespace Securite;
+namespace Securite\services;
 
 require_once 'autoloader.php';
 

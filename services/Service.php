@@ -1,6 +1,8 @@
 <?php
-namespace Securite;
+namespace Securite\services;
+use Securite\StdLib;
 
+require_once '../autoloader.php';
 abstract class Service
 {
     const ALLOWED_ARGS = ["table", "record", "filter", "columns"];
@@ -18,15 +20,15 @@ abstract class Service
             return;
         }
 
-        $jsonData = json_decode(file_get_contents('php://input'), true);
+        $json_data = json_decode(file_get_contents('php://input'), true);
 
-        if ($jsonData == null) {
+        if ($json_data == null) {
             http_response_code(400);
             echo json_encode(['error' => 'Invalid JSON data']);
             return;
         }
 
-        foreach ($jsonData as $attribute => $value) {
+        foreach ($json_data as $attribute => $value) {
             if (in_array($attribute, self::ALLOWED_ARGS)) {
                 $this->{$attribute} = $value;
             }

@@ -9,7 +9,7 @@ $path_segments = explode(
 $directory_name = end($path_segments);
 
 // construit le nom de classe en utilisant le repertoire comme base
-$class_name = "Securite\\" . ucfirst($directory_name) . "Service";
+$class_name = "Securite\\services\\" . ucfirst($directory_name) . "Service";
 
 if (class_exists($class_name)) {
     $service = new $class_name();
