@@ -2,7 +2,6 @@
 namespace Securite\services;
 use Securite\StdLib;
 
-require_once '../autoloader.php';
 abstract class Service
 {
     const ALLOWED_ARGS = ["table", "record", "filter", "columns"];

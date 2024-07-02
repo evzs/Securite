@@ -1,7 +1,7 @@
 <?php
 namespace Securite\services;
 
-require_once 'autoloader.php';
+use Securite\database\DataBase;
 
 class UpdateRecordService extends Service
 {

@@ -1,8 +1,6 @@
 <?php
 namespace Securite\seclib;
 
-require_once '../autoloader.php';
-
 class Credentials {
     public $server_name;
     public $db_name;

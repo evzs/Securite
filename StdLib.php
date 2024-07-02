@@ -1,6 +1,5 @@
 <?php
 namespace Securite;
-require_once 'autoloader.php';
 class StdLib
 {
     static function TestNeededArgs($arr_of_args, $class_instance)

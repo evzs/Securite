@@ -1,8 +1,9 @@
 <?php
 namespace Securite\services;
 
-require_once 'autoloader.php';
+use Securite\database\DataBase;
 
+require_once '../autoloader.php';
 class DeleteRecordService extends Service
 {
     const METHOD = 'DELETE';

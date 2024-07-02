@@ -1,6 +1,5 @@
 <?php
 namespace Securite\database;
-require_once '../autoloader.php';
 
 /* TODO: handle execptions with response codes for all the other methods et enlever tous les echos zzz
 TODO: supprimer try catch

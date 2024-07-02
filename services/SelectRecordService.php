@@ -1,7 +1,7 @@
 <?php
 namespace Securite\services;
 
-require_once 'Service.php';
+use Securite\database\DataBase;
 
 class SelectRecordService extends Service
 {

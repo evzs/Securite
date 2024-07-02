@@ -2,7 +2,6 @@
 namespace Securite\database;
 use Securite\seclib\Credentials;
 
-require_once '../autoloader.php';
 
 class Connection {
     public $pdo;

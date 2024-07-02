@@ -3,7 +3,6 @@ namespace Securite\services;
 
 use Securite\database\DataBase;
 
-require_once '../autoloader.php';
 
 class AddRecordService extends Service
 {
