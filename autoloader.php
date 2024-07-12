@@ -12,6 +12,9 @@ function autoloader($class_name) {
             __DIR__ . '/services',
             __DIR__ . '/database',
             __DIR__ . '/seclib',
+            __DIR__ . '/authorizer',
+            __DIR__ . '/authenticator',
+            __DIR__ . '/handlers',
         ];
 
         foreach ($directories as $directory) {

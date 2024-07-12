@@ -9,7 +9,7 @@ class DeleteRecordService extends Service
     const METHOD = 'DELETE';
     const NEEDED_ARGS = ["table", "filter"];
 
-    function execute()
+    public function execute()
     {
         $db = new DataBase();
 

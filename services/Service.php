@@ -1,17 +1,22 @@
 <?php
 namespace Securite\services;
+use Securite\handlers\HandlerManager;
 use Securite\StdLib;
+use Securite\database\DataBase;
 
 abstract class Service
 {
-    const ALLOWED_ARGS = ["table", "record", "filter", "columns"];
+//    const ALLOWED_ARGS = ["table", "record", "filter", "columns"];
+    const ALLOWED_ARGS = ["email", "password", "otp", "action"];
+    protected $db;
 
-    function __construct()
+    public function __construct(DataBase $db = null)
     {
+        $this->db = $db ?: new DataBase();
+
         $method = $_SERVER["REQUEST_METHOD"];
         if ($method != static::METHOD) {
-            http_response_code(405);
-            echo json_encode([
+            StdLib::sendResponse(405, [
                 'error' => 'Method Not Allowed',
                 'expected' => static::METHOD,
                 'received' => $method
@@ -22,8 +27,7 @@ abstract class Service
         $json_data = json_decode(file_get_contents('php://input'), true);
 
         if ($json_data == null) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Invalid JSON data']);
+            StdLib::sendResponse(400, ['error' => 'Invalid JSON data']);
             return;
         }
 
@@ -33,14 +37,27 @@ abstract class Service
             }
         }
 
-        if (!StdLib::testNeededArgs(static::NEEDED_ARGS, $this)) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Missing required arguments']);
+        if (!StdLib::validateRequiredArgs(static::NEEDED_ARGS, $this)) {
+            StdLib::sendResponse(400, ['error' => 'Missing required arguments']);
             return;
         }
 
-        $this->execute();
+        $this->processRequest();
     }
 
-    abstract function execute();
+    abstract function trig(): array;
+
+    protected function processRequest()
+    {
+        $request = $this->trig();
+        $type = $this->getHandlerType();
+        $handler_chain = HandlerManager::handlerChains($type);
+        $handler_chain->handle($request);
+    }
+
+    protected function getHandlerType(): string
+    {
+        $class_name = (new \ReflectionClass($this))->getShortName();
+        return strtolower(str_replace('Service', '', $class_name));
+    }
 }

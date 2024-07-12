@@ -8,7 +8,7 @@ class SelectRecordService extends Service
     const METHOD = 'GET';
     const NEEDED_ARGS = ["table", "columns", "filter"];
 
-    function execute()
+    public function execute()
     {
         $db = new DataBase();
 
