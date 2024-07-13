@@ -45,10 +45,10 @@ class SecuredActioner {
         $this->db->deleteRecord('accounts_otp', ['user_GUID' => $guid]);
     }
 
-
     // valide l'otp en accord avec l'action donnnee
     private function validateOTP($guid, $otp, $action) {
         $otp_record = $this->getOTPRecord($guid, $otp, $action);
+        // debug perso
         error_log("Validating OTP for GUID: $guid, OTP: $otp, Action: $action");
         error_log("OTP record validation result: " . json_encode($otp_record));
         return !empty($otp_record);
@@ -61,6 +61,7 @@ class SecuredActioner {
             'OTP' => $otp,
             'webservice_id' => $this->getWebserviceID($action)
         ]);
+        // debug perso
         error_log("Fetching OTP record for GUID: $guid, OTP: $otp, Action: $action");
         error_log("Fetched OTP record: " . json_encode($otp_record));
         return $otp_record;
@@ -75,7 +76,9 @@ class SecuredActioner {
             'deleteAccount' => 4,
             'signIn' => 5,
             'signedIn' => 6,
-            'signOut' => 7
+            'signOut' => 7,
+            'confirmPasswordChange' => 8,
+            'confirmAccountDeletion' => 9
         ];
 
         return $webservice_map[$action] ?? null;
@@ -88,9 +91,20 @@ class SecuredActioner {
         $this->deleteTempAccount($guid);
     }
 
+    // supprime tous les registres associes au guid de l'utilisateur
+    public function deleteUserRecords($guid)
+    {
+        $this->db->deleteRecord('accounts', ['user_GUID' => $guid]);
+        $this->db->deleteRecord('tmp_accounts', ['user_GUID' => $guid]);
+        $this->db->deleteRecord('accounts_otp', ['user_GUID' => $guid]);
+        $this->db->deleteRecord('secured_actions', ['user_GUID' => $guid]);
+        $this->db->deleteRecord('users', ['GUID' => $guid]);
+    }
+
     // recupere le compte temporaire de la bdd
     private function getTempAccount($guid) {
         $temp_account = $this->db->selectRecord('tmp_accounts', ['user_GUID', 'pwd', 'salt', 'stretch', 'created_at'], ['user_GUID' => $guid]);
+        // debug perso
         if (empty($temp_account)) {
             error_log("Temporary account not found for GUID: $guid");
             throw new \Exception("Temporary account not found for GUID: $guid");

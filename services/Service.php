@@ -7,13 +7,14 @@ use Securite\database\DataBase;
 abstract class Service
 {
 //    const ALLOWED_ARGS = ["table", "record", "filter", "columns"];
-    const ALLOWED_ARGS = ["email", "password", "otp", "action"];
+    const ALLOWED_ARGS = ["email", "password", "otp", "action", "new_password"];
     protected $db;
 
     public function __construct(DataBase $db = null)
     {
         $this->db = $db ?: new DataBase();
 
+        // verifie la methode de la requete
         $method = $_SERVER["REQUEST_METHOD"];
         if ($method != static::METHOD) {
             StdLib::sendResponse(405, [
@@ -47,6 +48,7 @@ abstract class Service
 
     abstract function trig(): array;
 
+    // traite la requete en appelant la chaine de handlers appropriee
     protected function processRequest()
     {
         $request = $this->trig();
@@ -55,6 +57,7 @@ abstract class Service
         $handler_chain->handle($request);
     }
 
+    // determine le type de handler a partir du nom de la classe
     protected function getHandlerType(): string
     {
         $class_name = (new \ReflectionClass($this))->getShortName();

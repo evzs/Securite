@@ -5,6 +5,7 @@ namespace Securite\handlers;
 namespace Securite\handlers;
 
 use Securite\Notifier;
+use Securite\Sanitizer;
 
 class SendOTPHandler extends BaseHandler {
     private $notifier;
@@ -14,10 +15,9 @@ class SendOTPHandler extends BaseHandler {
     }
 
     public function handle(array $request) {
-        $email = $request['email'];
+        $email = Sanitizer::sanitizeEmail($request['email']);
         $otp = $request['otp'];
         $this->notifier->sendOTP($email, $otp);
-
         return parent::handle($request);
     }
 }

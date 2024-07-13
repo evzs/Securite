@@ -19,6 +19,7 @@ class Identifier
         $this->notifier = $notifier;
     }
 
+    // verifie si l'utllisateur n'existe pas deja dans la bdd
     public function userDoesNotExist($email)
     {
         $existing_user = $this->db->selectRecord('users', ['GUID'], ['email' => $email]);
@@ -27,19 +28,23 @@ class Identifier
         }
     }
 
+    // ajoute un utilisateur a la bdd
     public function addUserToDatabase($email)
     {
         $this->db->addRecord('users', ['email' => $email]);
     }
 
-    public function getUserGUID($email) {
+    // recupere le guid utilisateur en fonction de son mail
+    public function getUserGUID($email)
+    {
         $new_user = $this->db->selectRecord('users', ['GUID'], ['email' => $email]);
         if (empty($new_user)) {
-            throw new \Exception("Failed to retrieve GUID of new user");
+            throw new \Exception("User does not exist / Invalid credentials");
         }
         return $new_user[0]['GUID'];
     }
 
+    // insertion utilisateur dans la bdd
     public function insertUser($email)
     {
         $this->userDoesNotExist($email);
@@ -47,6 +52,7 @@ class Identifier
         return $this->getUserGUID($email);
     }
 
+    // insertion du compte temp dans la bdd
     public function insertTempAccount($guid, $password_data)
     {
         $record = [
@@ -59,32 +65,14 @@ class Identifier
         $this->db->addRecord('tmp_accounts', $record);
     }
 
-//    public function verifyAccount($email, $otp) {
-//            $guid = $this->getUserGUID($email);
-//
-//            $isValidOTP = $this->secured_actioner->confirmSecuredAction($guid, $otp, 'signUp');
-//
-//            $this->secured_actioner->deleteOTP($guid);
-//
-//            if ($isValidOTP) {
-//                return json_encode(['status' => 'success', 'message' => "You're all good"]);
-//            } else {
-//                return json_encode(['status' => 'error', 'message' => 'Invalid OTP']);
-//            }
-//    }
-
-
-
-//    public function createTempAccount($email, $password)
-//    {
-//        $guid = $this->insertUser($email);
-//        $password_data = $this->crypto->generatePassword($password, null, 1000);
-//        $this->insertTempAccount($guid, $password_data);
-//        $this->secured_actioner->registerSecuredAction($guid, 'signup');
-//        $otp = $this->secured_actioner->generateOTP();
-//        $this->secured_actioner->insertOTP($guid, $otp, 1);
-//        $this->notifier->sendOTP($email, $otp);
-//
-//        return $guid;
-//    }
+    // maj du mdp utilisateur dans la bdd
+    public function updatePassword($guid, $new_password)
+    {
+        $password_data = $this->crypto->generatePassword($new_password, null, 1000);
+        $this->db->updateRecord('accounts', [
+            'pwd' => $password_data['secured_password'],
+            'salt' => $password_data['salt'],
+            'stretch' => $password_data['stretch']
+        ], ['user_GUID' => $guid]);
+    }
 }
