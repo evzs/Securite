@@ -1,6 +1,5 @@
 # A propos
 
----
 Ce projet vise à mettre en place un système de login sécurisé.
 Il comprend jusque là l'inscription, la vérification de compte, la demande et la confirmation de changement de mot de passe, et de suppression de compte.
 
@@ -8,14 +7,11 @@ Le projet a été développé en utilisant PHP 8.2 et en utilisant MariaDB versi
 
 # Mesures de sécurité
 
----
 - Hash des mots de passe : les mots de passe sont sécurisés à l'aide de la bibliothèque SHA512 et sont stockés avec des salts pour éviter les attaques par dictionnaire
 - OTP (One-Time Passwords) : les OTP sont générés pour valider les actions sensibles, garantissant que seul l'utilisateur propriétaire de l'adresse email peut confirmer ces actions
 - Actions sécurisées : toutes les actions sensibles (vérification de compte, changement de mot de passe, suppression de compte) nécessitent la validation par OTP
 
 # Structure du projet
-
----
 
 - Services : gèrent les requêtes entrantes et les distribuent aux handlers appropriés. 
 - Handlers : traitent les différentes étapes des requêtes.
@@ -27,14 +23,12 @@ Le projet a été développé en utilisant PHP 8.2 et en utilisant MariaDB versi
 
 # Convention de nommage personnelle
 
----
 - **Classes**: PascalCase
 - **Methodes et fonctions**: camelCase
 - **Variables**: snake_case (a l'exception des variables dans le HandlerManager, qui font reference a des classes et sont donc mises en pascalCase)
 
 # Installation et configuration
 
----
 - Clonez le depot sur votre machine locale: `git clone https://github.com/evzs/Securite.git`.
 - Configurez les fichiers PATH.php ainsi que votre fichier externe contenant vos credentials avec les parametres aproppries.
 - Votre fichier contenant les credentials devrait avoir cette structure (remplacez avec les valeurs correspondantes), au format json:
@@ -51,7 +45,6 @@ Le projet a été développé en utilisant PHP 8.2 et en utilisant MariaDB versi
 
 # Utilisation de l'API
 
----
 A utiliser idealement avec un client du style Postman/Insomnia.
 Vos requetes se feront sous ce format:
 `<adresseduserveur>/Securite/api/<endpoint>/`
@@ -123,7 +116,6 @@ Vous pouvez confirmer la suppression de votre compte avec l'OTP renvoyé suite a
 
 # A finir
 
----
 A ma grande deception le projet n'est pas complet pour l'instant.
 Ce qu'il reste a faire :
 
