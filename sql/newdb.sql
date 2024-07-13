@@ -69,3 +69,5 @@ CREATE TABLE secured_actions (
                                  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                  FOREIGN KEY (user_GUID) REFERENCES users(GUID)
 );
+
+-- TODO : create table for sessions with tokens

@@ -137,4 +137,6 @@ Ce qu'il reste a faire :
 - Anti brute-force
 - Check de format d'emails
 - Check de format de mots de passe
+- Gestion des erreurs HTTP renforcee
+- Affichage message quand 200 OK (je me servais de la BDD pour verifier que toutes les operations se faisaient correctement)
 
